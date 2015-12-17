@@ -1,5 +1,7 @@
-<!-- resources/views/auth/login.blade.php -->
+@extends('layouts.master')
 
+@section('content')
+<h1>Login</h1>
 <form method="POST" action="/auth/login">
     {!! csrf_field() !!}
 
@@ -21,3 +23,7 @@
         <button type="submit">Login</button>
     </div>
 </form>
+
+<p>Forgotten your password?</p>
+<p>Click here to <a href="{{ URL::route('password_email') }}" title="Reset Password">Reset your password.</a></p>
+@endsection
