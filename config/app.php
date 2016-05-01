@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'url' => 'https://htg-laravel-euperia.c9users.io/',
+    'url' => env('APP_URL', 'http://localhost:8000'),
 
     /*
     |--------------------------------------------------------------------------

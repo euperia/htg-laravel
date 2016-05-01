@@ -1,4 +1,8 @@
-@extends('layouts.master')
+@extends('layouts.main')
+
+@section('page_header')
+    <h1>Reset your password</h1>
+@endsection
 
 @section('content')
     
@@ -13,26 +17,27 @@
                 @endforeach
             </ul>
         @endif
-    
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
+
+        <div class="form-group">
+            <label for="login-email">Email address</label>
+            <input name="email" type="email" class="form-control"
+                   id="login-email" value="{{ old('email') }}"
+                   placeholder="Email">
         </div>
-    
-        <div>
-            Password
-            <input type="password" name="password">
+
+        <div class="form-group">
+            <label for="login-password">Password</label>
+            <input name="password" type="password" class="form-control"
+                   id="login-password" placeholder="Password">
         </div>
-    
-        <div>
-            Confirm Password
-            <input type="password" name="password_confirmation">
+
+        <div class="form-group">
+            <label for="login-confirm-password">Confirm Password</label>
+            <input name="password_confirmation" type="password"
+                   class="form-control" id="login-confirm-password"
+                   placeholder="Confirm Password">
         </div>
-    
-        <div>
-            <button type="submit">
-                Reset Password
-            </button>
-        </div>
+
+        <button type="submit" class="btn btn-default">Reset Password</button>
     </form>
 @endsection

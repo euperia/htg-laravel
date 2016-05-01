@@ -1,44 +1,54 @@
-@extends('layouts.master')
+@extends('layouts.main')
+
+@section('page_header')
+    <h1>Register</h1>
+@endsection
 
 @section('content')
    
-    <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Please sign up <small>It's free!</small></h3>
-      </div>
-      <div class="panel-body">
+
         <form role="form" method="post" action="/auth/register">
             {!! csrf_field() !!}
-          <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6">
-              <div class="form-group">
-                <input type="text" name="name" class="form-control input-sm" value="{{ old('name') }}" placeholder="Name">
+
+            @if (count($errors) > 0)
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
+
+            <div class="form-group">
+                <label for="login-name">Name</label>
+                <input name="name" type="text" class="form-control"
+                       id="login-name" value="{{ old('name') }}"
+                       placeholder="Your name">
             </div>
+
+            <div class="form-group">
+                <label for="login-email">Email address</label>
+                <input name="email" type="email" class="form-control"
+                       id="login-email" value="{{ old('email') }}"
+                       placeholder="Email">
+            </div>
+
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input name="password" type="password" class="form-control"
+                       id="login-password" placeholder="Password">
+            </div>
+
+            <div class="form-group">
+                <label for="login-confirm-password">Confirm Password</label>
+                <input name="password_confirmation" type="password"
+                       class="form-control" id="login-confirm-password"
+                       placeholder="Confirm Password">
             </div>
 
 
-          <div class="form-group">
-            <input type="email" name="email" class="form-control input-sm" value="{{ old('email') }}" placeholder="Email Address">
-          </div>
+            <button type="submit" class="btn btn-default">Submit</button>
 
-          <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6">
-              <div class="form-group">
-                <input type="password" name="password" class="form-control input-sm" placeholder="Password">
-              </div>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-6">
-              <div class="form-group">
-                <input type="password" name="password_confirmation" class="form-control input-sm" placeholder="Confirm Password">
-              </div>
-            </div>
-          </div>
-
-          <input type="submit" value="Register" class="btn btn-info btn-block">
 
         </form>
-      </div>
-    </div>
-  </div>
+
 @endsection

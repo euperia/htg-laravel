@@ -1,0 +1,9 @@
+.splash {
+    padding: 4em 0 4em;
+    background-color: #141d27;
+    background-image: url(../img/bg-grass.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    color: #fff;
+    text-align: center;
+}

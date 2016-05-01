@@ -1,7 +1,16 @@
-@extends('layouts.master')
+@extends('layouts.main')
+
+@section('title')
+HTG: Home
+@endsection
 
 @section('content')
-    <h1>Welcome to HTG Laravel</h1>
+
+    @section('page_header')
+    <h1>HTG: Starter</h1>
+    @endsection
+
+
     <h2>The Laravel implementation of Hit The Ground</h2>
     <p><em>Hit The Ground (HTG)</em> is a starter app for web development projects
     aimed at rapid prototyping.</p>

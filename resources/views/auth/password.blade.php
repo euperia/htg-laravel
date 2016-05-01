@@ -1,4 +1,8 @@
-@extends('layouts.master')
+@extends('layouts.main')
+
+@section('page_header')
+    <h1>Password Reminder</h1>
+@endsection
 
 @section('content')
 
@@ -12,23 +16,15 @@
                 @endforeach
             </ul>
         @endif
-    
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
+
+        <div class="form-group">
+            <label for="login-email">Email address</label>
+            <input name="email" type="email" class="form-control" id="login-email"
+                   value="{{ old('email') }}" placeholder="Email">
         </div>
-    
-        <div>
-            <button type="submit">
-                Send Password Reset Link
-            </button>
-        </div>
+
+        <button type="submit" class="btn btn-default">Send Password Reset Link</button>
+
     </form>
-    
-    <h2>Your options are:</h2>
-    <ul>
-        <li><a href="{{ URL::route('auth_login') }}" title="Log In">Log in</a> to your HTG Dashboard.</li>
-        <li><a href="{{ URL::route('auth_register') }}" title="Register">Register</a> with us first</li>
-    </ul>
-    
+
 @endsection
