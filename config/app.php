@@ -14,6 +14,7 @@ return [
     */
 
     'debug' => env('APP_DEBUG', false),
+    'debugbar.enabled' => env('APP_DEBUGBAR', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -147,8 +148,8 @@ return [
 
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
-        Laravel\Socialite\SocialiteServiceProvider::class
-
+        Laravel\Socialite\SocialiteServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -177,7 +178,7 @@ return [
         'Eloquent'  => Illuminate\Database\Eloquent\Model::class,
         'Event'     => Illuminate\Support\Facades\Event::class,
         'File'      => Illuminate\Support\Facades\File::class,
-//        'Gate'      => Illuminate\Support\Facades\Gate::class,
+        'Gate'      => Illuminate\Support\Facades\Gate::class,
         'Hash'      => Illuminate\Support\Facades\Hash::class,
         'Input'     => Illuminate\Support\Facades\Input::class,
         'Inspiring' => Illuminate\Foundation\Inspiring::class,
@@ -200,6 +201,7 @@ return [
         'Form'      => Illuminate\Html\FormFacade::class,
         'HTML'      => Illuminate\Html\HtmlFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 

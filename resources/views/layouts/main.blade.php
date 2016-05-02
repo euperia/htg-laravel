@@ -32,6 +32,7 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 </head>
 
 <body>
@@ -46,6 +47,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+
             <a class="navbar-brand" href="/">HTG: Starter</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
@@ -71,17 +73,25 @@
                 --}}
                 @endif
             </ul>
-        </div><!--/.nav-collapse -->
+
+            @if (isset(Auth::user()->avatar))
+            <ul class="nav navbar-nav navbar-right">
+                <li><img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}"></li>
+            </ul>
+            @endif;
+        </div>
     </div>
 </nav>
 
-<!-- Begin page content -->
+{{-- Begin page content --}}
 <div class="container">
     <div class="page-header">
-        @yield('page_header')
+        <h1>@yield('page_header')</h1>
+        <hr>
     </div>
     @yield('content')
 </div>
+{{-- end page content --}}
 
 <footer class="footer">
     <div class="container">
@@ -90,16 +100,9 @@
 </footer>
 
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-
-<!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
