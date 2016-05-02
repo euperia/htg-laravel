@@ -8,6 +8,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Support\Facades\Hash;
 use Socialite;
 use Auth;
 
@@ -79,8 +80,6 @@ class AuthController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-
-
     /**
      * Obtain the user information from Google.
      *
@@ -97,7 +96,7 @@ class AuthController extends Controller
         $authUser = $this->findOrCreateGoogleUser($user);
 
         Auth::login($authUser, true);
-        return Redirect::to('home');
+        return redirect()->route('dashboard_home');
     }
 
     /**
@@ -119,6 +118,7 @@ class AuthController extends Controller
             return User::create([
                 'name'      => $googleUser->name,
                 'email'     => $googleUser->email,
+                'password'  => $this->generatePassword(),
                 'google_id' => $googleUser->id,
                 'avatar'    => $googleUser->avatar
             ]);
@@ -169,7 +169,7 @@ class AuthController extends Controller
         $authUser = $this->findOrCreateFacebookUser($user);
 
         Auth::login($authUser, true);
-        return Redirect::to('home');
+        return redirect()->route('dashboard_home');
     }
 
     /**
@@ -191,6 +191,7 @@ class AuthController extends Controller
             return User::create([
                 'name'      => $facebookUser->name,
                 'email'     => $facebookUser->email,
+                'password'  => $this->generatePassword(),
                 'facebook_id' => $facebookUser->id,
                 'avatar'    => $facebookUser->avatar
             ]);
@@ -244,7 +245,7 @@ class AuthController extends Controller
 
         Auth::login($authUser, true);
 
-        return Redirect::to('home');
+        return redirect()->route('dashboard_home');
     }
 
     /**
@@ -266,6 +267,7 @@ class AuthController extends Controller
             return User::create([
                 'name'      => $twitterUser->name,
                 'email'     => $twitterUser->nickname . '@twitter.com',
+                'password'  => $this->generatePassword(),
                 'twitter_id' => $twitterUser->id,
                 'avatar'    => $twitterUser->avatar
             ]);
@@ -281,5 +283,10 @@ class AuthController extends Controller
 
         return $authUser;
 
+    }
+
+    private function generatePassword()
+    {
+        return Hash::make(str_random(16));
     }
 }
