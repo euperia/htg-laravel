@@ -6,13 +6,12 @@ HTG: Home
 
 @section('content')
 
-    @section('page_header')
-    <h1>HTG: Starter</h1>
-    @endsection
-
-    <p><em>Hit The Ground (HTG)</em> is a starter app for web development projects
-    aimed at rapid prototyping.</p>
-    <p>This is the Laravel implementation of HTG.</p>
+    <div class="jumbotron">
+        <h1>Hit The Ground: Laravel Edition</h1>
+        <p><em>Hit The Ground (HTG)</em> is a starter app for web development projects
+            aimed at rapid prototyping.</p>
+        <p>This is the Laravel implementation of HTG.</p>
+    </div>
 
     @if (Auth::guest())
     <h2>Your options are:</h2>

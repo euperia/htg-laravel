@@ -257,12 +257,9 @@ class AuthController extends Controller
     private function findOrCreateTwitterUser($twitterUser)
     {
 
-        $authUser = User::where('email', $twitterUser->email)->first();
+        $authUser = User::where('email', $twitterUser->nickname . '@twitter.com')->first();
 
         if (!$authUser) {
-            // this user MAY already have an ac, either signed in via Facebook
-            // or by already registering.
-
 
             return User::create([
                 'name'      => $twitterUser->name,
@@ -285,8 +282,9 @@ class AuthController extends Controller
 
     }
 
+
     private function generatePassword()
     {
-        return Hash::make(str_random(16));
+        return bcrypt(Hash::make(str_random(16)));
     }
 }

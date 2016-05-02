@@ -56,6 +56,7 @@
                 <li><a href="{{ URL::route('auth_login') }}" title="Log In">Log in</a> </li>
                 <li><a href="{{ URL::route('auth_register') }}" title="Register">Register</a></li>
                 @else
+                <li><a href="{{ URL::route('dashboard_home') }}" title="Dashboard">Dashboard</a></li>
                 <li><a href="{{ URL::route('auth_logout') }}" title="Logout">Logout</a></li>
                 {{--
                 <li class="dropdown">
@@ -76,7 +77,7 @@
 
             @if (isset(Auth::user()->avatar))
             <ul class="nav navbar-nav navbar-right">
-                <li><img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}"></li>
+                <li><img src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" width="50" height="50"></li>
             </ul>
             @endif
         </div>
