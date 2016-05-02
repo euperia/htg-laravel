@@ -18,7 +18,7 @@ Register
 
     <div class="row">
         <div class="col-md-4">
-            <h3>Register the quick way..</h3>
+            <h3>Register the quick way&hellip;</h3>
             @include('auth/social-logins')
         </div>
         <div class="col-md-8">
@@ -27,8 +27,7 @@ Register
 
             <div class="well">
 
-                <form role="form" method="post" action="/auth/register">
-                    {!! csrf_field() !!}
+                    {!! Form::open(array('route' => 'auth_register')) !!}
 
                     @if (count($errors) > 0)
                         <ul>
@@ -39,40 +38,44 @@ Register
                     @endif
 
                     <div class="form-group">
-                        <label for="login-name">Name</label>
-                        <input name="name" type="text" class="form-control"
-                               id="login-name" value="{{ old('name') }}"
-                               placeholder="Your name">
+                        {!! Form::label('name', 'Name') !!}
+                        {!! Form::text('name', old('name'), [
+                            'class' => 'form-control',
+                            'placeholder' => 'Your name'
+                        ]) !!}
                     </div>
 
                     <div class="form-group">
-                        <label for="login-email">Email address</label>
-                        <input name="email" type="email" class="form-control"
-                               id="login-email" value="{{ old('email') }}"
-                               placeholder="Email">
+                        {!! Form::label('email', 'Email Address') !!}
+                        {!! Form::email('email', old('email'), [
+                        'class' => 'form-control',
+                        'placeholder' => 'Email address'
+                        ]) !!}
                     </div>
 
                     <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input name="password" type="password"
-                               class="form-control"
-                               id="login-password" placeholder="Password">
+                        {!! Form::label('password', 'Password') !!}
+                        {!! Form::password('password', [
+                                'class' => 'form-control',
+                                'id' => 'login-password',
+                                'placeholder' => 'Password'
+                                ]) !!}
                     </div>
 
                     <div class="form-group">
-                        <label for="login-confirm-password">Confirm
-                            Password</label>
-                        <input name="password_confirmation" type="password"
-                               class="form-control" id="login-confirm-password"
-                               placeholder="Confirm Password">
+                        {!! Form::label('password_confirmation', 'Password again') !!}
+                        {!! Form::password('password_confirmation', [
+                                'class' => 'form-control',
+                                'placeholder' => 'Please repeat your password'
+                                ]) !!}
                     </div>
 
+                    {!! Form::button('Register', [
+                        'type' => 'submit',
+                        'class' => 'btn btn-danger'
+                    ]) !!}
 
-                    <button type="submit" class="btn btn-default">Submit
-                    </button>
-
-
-                </form>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

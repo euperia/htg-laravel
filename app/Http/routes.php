@@ -17,7 +17,12 @@ Route::get('auth/login', [
     ]
 );
 
-Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::post('auth/login', [
+        'as' => 'auth_login',
+        'uses' => 'Auth\AuthController@postLogin'
+        ]
+);
+
 Route::get('auth/logout', [
     'as' => 'auth_logout',
     'uses' => 'Auth\AuthController@getLogout'
@@ -30,7 +35,12 @@ Route::get('auth/register', [
     'uses' =>'Auth\AuthController@getRegister'
     ]
 );
-Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+Route::post('auth/register', [
+        'as' => 'auth_register',
+        'uses' => 'Auth\AuthController@postRegister'
+    ]
+);
 
 Route::get('/dashboard', [
     'as' => 'dashboard_home',
@@ -46,11 +56,17 @@ Route::get('password/email', [
     ]
 );
 
-Route::post('password/email', 'Auth\PasswordController@postEmail');
+Route::post('password/email', [
+    'as' => 'password_email',
+    'uses' => 'Auth\PasswordController@postEmail'
+]);
 
 // Password reset routes...
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
-Route::post('password/reset', 'Auth\PasswordController@postReset');
+Route::post('password/reset', [
+    'as' => 'password_reset',
+    'use' => 'Auth\PasswordController@postReset'
+]);
 
 Route::get('/', function () {
     return view('home');
