@@ -79,13 +79,9 @@ Route::get('/home', function () {
 /*
  * Social logins
  */
-Route::get('auth/login/google', 'Auth\AuthController@loginWithGoogle');
-Route::get('auth/google', 'Auth\AuthController@redirectToProvider');
-Route::get('auth/google/callback', 'Auth\AuthController@handleGoogleProviderCallback');
-
-Route::get('auth/login/facebook', 'Auth\AuthController@loginWithFacebook');
-Route::get('auth/facebook', 'Auth\AuthController@redirectToProvider');
-Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookProviderCallback');
+Route::get('auth/login/{provider}', 'Auth\AuthController@loginWithProvider');
+Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
+Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
 
 
 // Log all SQL executed in Eloquent
@@ -95,6 +91,4 @@ Event::listen('illuminate.query', function($query)
     file_put_contents('/tmp/laravel.log', $query);
 });
 */
-Route::get('auth/login/twitter', 'Auth\AuthController@loginWithTwitter');
-Route::get('auth/twitter', 'Auth\AuthController@redirectToProvider');
-Route::get('auth/twitter/callback', 'Auth\AuthController@handleTwitterProviderCallback');
+

@@ -55,6 +55,7 @@ class AuthController extends Controller
         ]);
     }
 
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -75,211 +76,74 @@ class AuthController extends Controller
      * Redirect to Google Login
      * @return mixed
      */
-    public function loginWithGoogle()
+    public function loginWithProvider($provider)
     {
-        return Socialite::driver('google')->redirect();
+        if (!in_array($provider, ['google', 'facebook', 'twitter'])) {
+            abort(404);
+        }
+
+        return Socialite::driver($provider)->redirect();
     }
 
+
     /**
-     * Obtain the user information from Google.
+     * Obtain the user information from the provider.
      *
      * @return Response
      */
-    public function handleGoogleProviderCallback()
+    public function handleProviderCallback($provider)
     {
         try {
-            $user = Socialite::driver('google')->user();
+            $user = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
-            return Redirect::to('auth/google');
+            return Redirect::to('auth/' . $provider);
         }
 
-        $authUser = $this->findOrCreateGoogleUser($user);
+        $authUser = $this->findOrCreateUser($user, $provider);
 
         Auth::login($authUser, true);
         return redirect()->route('dashboard_home');
     }
 
-    /**
-     * Return user if exists; create and return if not
-     *
-     * @param $googleUser
-     * @return User
-     */
-    private function findOrCreateGoogleUser($googleUser)
-    {
 
-
-        $authUser = User::where('email', $googleUser->email)->first();
-
-        if (!$authUser) {
-            // this user MAY already have an ac, either signed in via Facebook
-            // or by already registering.
-
-            return User::create([
-                'name'      => $googleUser->name,
-                'email'     => $googleUser->email,
-                'password'  => $this->generatePassword(),
-                'google_id' => $googleUser->id,
-                'avatar'    => $googleUser->avatar
-            ]);
-        }
-
-        if ($authUser->google_id === $googleUser->id) {
-            return $authUser;
-        }
-
-        $authUser->google_id = $googleUser->id;
-        $authUser->avatar = $googleUser->avatar;
-        $authUser->save();
-
-        return $authUser;
-    }
-
-    /*
-     * FACEBOOK LOGIN
-     */
-
-
-
-    /**
-     * Redirect to Facebook Login
-     * @return mixed
-     */
-    public function loginWithFacebook()
-    {
-        return Socialite::driver('facebook')->redirect();
-    }
-
-
-
-    /**
-     * Obtain the user information from facebook.
-     *
-     * @return Response
-     */
-    public function handleFacebookProviderCallback()
-    {
-        try {
-            $user = Socialite::driver('facebook')->user();
-
-        } catch (\Exception $e) {
-            return Redirect::to('auth/facebook');
-        }
-
-        $authUser = $this->findOrCreateFacebookUser($user);
-
-        Auth::login($authUser, true);
-        return redirect()->route('dashboard_home');
-    }
 
     /**
      * Return user if exists; create and return if not
      *
-     * @param $facebookUser
+     * @param $user
      * @return User
      */
-    private function findOrCreateFacebookUser($facebookUser)
+    private function findOrCreateUser($user, $provider)
     {
 
+        if ($provider == 'twitter') {
+            $user->email = $user->nickname . '@twitter.com';
+        }
 
-        $authUser = User::where('email', $facebookUser->email)->first();
+        $authUser = User::where('email', $user->email)->first();
 
         if (!$authUser) {
-            // this user MAY already have an ac, either signed in via Facebook
-            // or by already registering.
+            // this user MAY already have an ac, either signed in via a different
+            // provider, or by already registering.
 
             return User::create([
-                'name'      => $facebookUser->name,
-                'email'     => $facebookUser->email,
+                'name'      => $user->name,
+                'email'     => $user->email,
                 'password'  => $this->generatePassword(),
-                'facebook_id' => $facebookUser->id,
-                'avatar'    => $facebookUser->avatar
+                $provider . '_id' => $user->id,
+                'avatar'    => $user->avatar
             ]);
         }
 
-        if ($authUser->facebook_id === $facebookUser->id) {
+        if ($authUser->{$provider . '_id'} === $user->id) {
             return $authUser;
         }
 
-        $authUser->facebook_id = $facebookUser->id;
-        $authUser->avatar = $facebookUser->avatar;
+        $authUser->{$provider . '_id'} = $user->id;
+        $authUser->avatar = $user->avatar;
         $authUser->save();
 
         return $authUser;
-
-    }
-
-
-    /*
-     * TWITTER LOGIN
-     */
-
-
-
-    /**
-     * Redirect to Twitter Login
-     * @return mixed
-     */
-    public function loginWithTwitter()
-    {
-        return Socialite::driver('twitter')->redirect();
-    }
-
-
-
-    /**
-     * Obtain the user information from Twitter.
-     *
-     * @return Response
-     */
-    public function handleTwitterProviderCallback()
-    {
-        try {
-            $user = Socialite::driver('twitter')->user();
-
-        } catch (\Exception $e) {
-            return Redirect::to('auth/twitter');
-        }
-
-        $authUser = $this->findOrCreateTwitterUser($user);
-
-        Auth::login($authUser, true);
-
-        return redirect()->route('dashboard_home');
-    }
-
-    /**
-     * Return user if exists; create and return if not
-     *
-     * @param $twitterUser
-     * @return User
-     */
-    private function findOrCreateTwitterUser($twitterUser)
-    {
-
-        $authUser = User::where('email', $twitterUser->nickname . '@twitter.com')->first();
-
-        if (!$authUser) {
-
-            return User::create([
-                'name'      => $twitterUser->name,
-                'email'     => $twitterUser->nickname . '@twitter.com',
-                'password'  => $this->generatePassword(),
-                'twitter_id' => $twitterUser->id,
-                'avatar'    => $twitterUser->avatar
-            ]);
-        }
-
-        if ($authUser->twitter_id === $twitterUser->id) {
-            return $authUser;
-        }
-
-        $authUser->twitter_id = $twitterUser->id;
-        $authUser->avatar = $twitterUser->avatar;
-        $authUser->save();
-
-        return $authUser;
-
     }
 
 
