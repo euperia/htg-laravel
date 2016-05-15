@@ -74,9 +74,6 @@ Sign-In
 
                 </div>
         </div>
-
-
-
     </div>
 
 @endsection

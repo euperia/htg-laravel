@@ -72,9 +72,7 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/home', function () {
-    return view('home');
-});
+Route::get('/home', 'HomeController@index');
 
 /*
  * Social logins
@@ -91,4 +89,7 @@ Event::listen('illuminate.query', function($query)
     file_put_contents('/tmp/laravel.log', $query);
 });
 */
+
+
+Route::auth();
 
