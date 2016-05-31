@@ -82,13 +82,17 @@ Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
 
 
-// Log all SQL executed in Eloquent
+
 /*
-Event::listen('illuminate.query', function($query)
-{
-    file_put_contents('/tmp/laravel.log', $query);
-});
-*/
+ * Admin paths
+ */
+
+Route::get('admin', [
+    'middleware' => ['auth', 'roles'],
+    'as' => 'admin_home',
+    'uses' => 'AdminController@index',
+    'roles' => ['administrator', 'root']
+]);
 
 
 Route::auth();
