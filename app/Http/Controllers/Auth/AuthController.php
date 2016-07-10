@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use App\User;
+use Socialite;
+use Validator;
+use App\OAuthUser;
 use Illuminate\Support\Facades\Redirect;
 use Thomaswelton\LaravelGravatar\Facades\Gravatar;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Hash;
-use Socialite;
-use Auth;
 
 class AuthController extends Controller
 {
@@ -65,26 +66,35 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'avatar' => Gravatar::src($data['email'], 50)
-        ]);
+
+        $newUser = new User();
+        $newUser->name = $data['name'];
+        $newUser->email = $data['email'];
+        $newUser->password = bcrypt($data['password']);
+        $newUser->avatar = Gravatar::src($data['email'], 50);
+        $newUser->save();
+        return $newUser;
     }
 
 
     /**
-     * Redirect to Google Login
+     * Redirect to provider Login
      * @return mixed
      */
     public function loginWithProvider($provider)
     {
-        if (!in_array($provider, ['google', 'facebook', 'twitter'])) {
+        if (!in_array($provider, ['google', 'facebook', 'bitbucket', 'github'])) {
             abort(404);
         }
 
+        $scopes = [
+            'google'    => ['profile'],
+            'facebook'  => ['public_profile'],
+            'github'    => ['user'],
+        ];
+
         return Socialite::driver($provider)->redirect();
+//        return Socialite::driver($provider)->scopes($scopes[$provider])->redirect();
     }
 
 
@@ -98,7 +108,7 @@ class AuthController extends Controller
         try {
             $user = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
-            return Redirect::to('auth/' . $provider);
+            return redirect()->route('home');
         }
 
         $authUser = $this->findOrCreateUser($user, $provider);
@@ -106,7 +116,6 @@ class AuthController extends Controller
         Auth::login($authUser, true);
         return redirect()->route('dashboard_home');
     }
-
 
 
     /**
@@ -118,36 +127,23 @@ class AuthController extends Controller
     private function findOrCreateUser($user, $provider)
     {
 
-        if ($provider == 'twitter') {
-            $user->email = $user->nickname . '@twitter.com';
+        $existingUser = User::where('email', $user->email)->first();
+
+        if ($existingUser) {
+            return $existingUser;
+        } else {
+
+            $newUser = new User();
+            $newUser->name = $user->name;
+            $newUser->email = $user->email;
+            $newUser->password = $this->generatePassword();
+            $newUser->avatar = $user->avatar;
+            $newUser->save();
+
+            return $newUser;
+
         }
-
-        $authUser = User::where('email', $user->email)->first();
-
-        if (!$authUser) {
-            // this user MAY already have an ac, either signed in via a different
-            // provider, or by already registering.
-
-            return User::create([
-                'name'      => $user->name,
-                'email'     => $user->email,
-                'password'  => $this->generatePassword(),
-                $provider . '_id' => $user->id,
-                'avatar'    => $user->avatar
-            ]);
-        }
-
-        if ($authUser->{$provider . '_id'} === $user->id) {
-            return $authUser;
-        }
-
-        $authUser->{$provider . '_id'} = $user->id;
-        $authUser->avatar = $user->avatar;
-        $authUser->save();
-
-        return $authUser;
     }
-
 
     private function generatePassword()
     {

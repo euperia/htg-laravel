@@ -22,10 +22,11 @@
 
     <div class="row">
         <div class="col-md-12">
-            <a href="/auth/login/twitter"
-               class="btn btn-block btn-social btn-twitter btn-sm">
-                <span class="fa fa-twitter"></span> Sign-in with Twitter
+            <a href="/auth/login/github"
+               class="btn btn-block btn-social btn-github btn-sm">
+                <span class="fa fa-github"></span> Sign-in with Github
             </a>
         </div>
     </div>
+
 </div>

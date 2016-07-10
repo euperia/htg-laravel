@@ -28,15 +28,14 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'google_id',
-        'facebook_id', 'twitter_id', 'avatar'];
+    protected $fillable = ['name'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['email', 'avatar', 'role_id', 'status', 'password', 'remember_token'];
 
 
     /**
@@ -56,10 +55,6 @@ class User extends Model implements AuthenticatableContract,
     public function hasRole($roles)
     {
         $this->have_role = $this->getUserRole();
-
-        if ($this->have_role->name == 'Root') {
-            return true;
-        }
 
         if (is_array($roles)) {
 
@@ -83,6 +78,12 @@ class User extends Model implements AuthenticatableContract,
     private function checkIfUserHasRole($need_role)
     {
         return (strtolower($need_role) == strtolower($this->have_role->name)) ? true : false;
+    }
+
+
+    public function getGravatarUrl()
+    {
+
     }
 
 }

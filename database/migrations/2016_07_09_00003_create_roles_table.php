@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRoles extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,6 +18,7 @@ class CreateRoles extends Migration
             $table->string('description', 255);
             $table->timestamps();
         });
+
     }
 
     /**

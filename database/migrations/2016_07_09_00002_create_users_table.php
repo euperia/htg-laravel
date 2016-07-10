@@ -18,11 +18,6 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password', 60)->nullable();
 
-            // Social login ids
-            $table->string('google_id')->unique()->nullable();
-            $table->string('facebook_id')->unique()->nullable();
-            $table->string('twitter_id')->unique()->nullable();
-
             $table->string('avatar')->nullable();
 
             $table->integer('role_id')->default(1)->unsigned();

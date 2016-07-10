@@ -72,28 +72,48 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home',[
+    'as' => 'home',
+    'uses' => 'HomeController@index'
+]);
 
 /*
  * Social logins
  */
 Route::get('auth/login/{provider}', 'Auth\AuthController@loginWithProvider');
-Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
-
-
 
 /*
  * Admin paths
  */
 
-Route::get('admin', [
+Route::get('admin/dashboard', [
+    'as' => 'admin::dashboard', 
     'middleware' => ['auth', 'roles'],
-    'as' => 'admin_home',
-    'uses' => 'AdminController@index',
+    'uses' => 'AdminController@dashboard',
     'roles' => ['administrator', 'root']
 ]);
 
+Route::get('admin/users', [
+    'as' => 'admin::users',
+    'middleware' => ['auth', 'roles'],
+    'uses' => 'AdminController@users',
+    'roles' => ['administrator', 'root']
+]);
+
+Route::get('admin/user/{user}', [
+    'as' => 'admin::user:edit',
+    'middleware' => ['auth', 'roles'],
+    'uses' => 'AdminController@user',
+    'roles' => ['administrator', 'root']
+])->where('id', '[0-9]+');
+
+Route::post('admin/user/{user}', [
+    'as' => 'admin::user::update',
+    'middleware' => ['auth', 'roles'],
+    'uses' => 'AdminController@userUpdate',
+    'roles' => ['administrator', 'root']
+]);
 
 Route::auth();
 

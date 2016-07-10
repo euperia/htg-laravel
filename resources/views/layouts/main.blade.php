@@ -57,6 +57,11 @@
                 <li><a href="{{ URL::route('auth_register') }}" title="Register">Register</a></li>
                 @else
                 <li><a href="{{ URL::route('dashboard_home') }}" title="Dashboard">Dashboard</a></li>
+                @if (Auth::User()->hasRole(['root', 'administrator']))
+
+                <li><a href="{{ URL::route('admin::dashboard') }}" title="Admin">Admin</a></li>
+                    @endif;
+
                 <li><a href="{{ URL::route('auth_logout') }}" title="Logout">Logout</a></li>
                 {{--
                 <li class="dropdown">
