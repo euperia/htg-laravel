@@ -19,14 +19,6 @@ Edit User
                 <div class="col-md-8 col-md-offset-2">
                     {!! Form::model($user, array('route' => array('admin::user::update', $user->id))) !!}
                     {!! Form::hidden('id') !!} 
-                    @if (count($errors) > 0)
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-
                     <div class="form-group">
                         <img src="{{ $user->avatar }}" class="img-circle" />
 
@@ -51,7 +43,7 @@ Edit User
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label('password', 'Password') !!}
+                        {!! Form::label('password', 'New Password') !!}
                         {!! Form::password('password', [
                                 'class' => 'form-control',
                                 'id' => 'login-password',

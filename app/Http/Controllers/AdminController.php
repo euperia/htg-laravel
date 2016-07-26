@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Auth;
+use Session;
 use App\Role;
 use App\User;
 use App\Http\Requests;
@@ -20,13 +22,13 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return View('admin/index', $this->getUsers());
+        return View('admin/index', ['users' => User::count()]);
     }
 
     public function users()
     {
 
-        $data = $this->getUsers();
+        $data = ['users' => User::paginate(20), 'userCount' => User::count()];
         return View('admin/users', $data);
     }
 
@@ -52,6 +54,10 @@ class AdminController extends Controller
             unset($formRoles[3]);
         }
 
+        // if current user is root, can't change own role.
+        if ($user->id === Auth::user()->id && Auth::user()->hasRole('Root')) {
+            unset($formRoles[1], $formRoles[2]);
+        }
 
         return View('admin/user/edit', ['user' => $user, 'roles' => $formRoles]);
     }
@@ -59,6 +65,22 @@ class AdminController extends Controller
     public function userUpdate(Request $request, User $user)
     {
         // validations
+        $this->validate($request, [
+            'name' => 'required|min:3|string',
+            'email' => 'required|email',
+            'password' => 'min:8',
+        ]);
+
+        // check if email address already exists.
+        if (User::where('email', $request->email)->first()) {
+            session()->flash('flash_message', [
+                'level' => 'danger', 
+                'msg' => 'That email address belongs to another account'
+                ]
+            );
+            return redirect('/admin/user/' . $user->id);
+        }
+        
 
         $user->email = $request->email;
         $user->name = $request->name;
@@ -67,10 +89,9 @@ class AdminController extends Controller
         }
         $user->role_id = $request->role_id;
         $user->status = $request->status;
-        $user->avatar = Gravatar::src($request->email, 50);
         $user->update();
 
-
+        Session::flash('flash_message', ['level' => 'success', 'msg' => 'Account updated OK']);
         return redirect('/admin/users');
     }
 
