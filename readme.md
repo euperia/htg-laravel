@@ -8,7 +8,9 @@ This project has:
 * User Registration and Authentication
 * Admin area with user management.
 * Admin area using the excellent AdminLTE theme from Abdullah Almaseed (https://almsaeedstudio.com/)
+
 ![Screenshot](htg-admin.png)
+
 # Requirements
 
 * PHP 5.6+ (recommended PHP7+)
