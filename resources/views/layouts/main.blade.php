@@ -99,7 +99,7 @@
 
 <footer class="footer">
     <div class="container">
-        <p class="text-muted">&copy; {{ date('Y') }} Invisible Tomato</p>
+        <p class="text-muted">&copy; {{ date('Y') }} Andrew McCombe</p>
     </div>
 </footer>
 
