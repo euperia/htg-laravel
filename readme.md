@@ -25,8 +25,9 @@ This project has:
 4. Set up a MySQL Schema and add the credentials to `.env`.
 5. Create a security key: `php artisan key:generate`
 6. Run the migrations to install the database tables: `php artisan migrate`
-7. Start the web server `php artisan serve` should be enough to get you up and running.
-8. Finally, browse to http://localhost:8000.
+7. Run the database seeds: `php artisan db:seed`
+8. Start the web server `php artisan serve` should be enough to get you up and running.
+9. Finally, browse to http://localhost:8000, and go make something awesome.
 
 
 
