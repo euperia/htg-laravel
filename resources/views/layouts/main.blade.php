@@ -61,6 +61,7 @@
                     @endif;
 
                 <li><a href="{{ URL::route('auth_logout') }}" title="Logout">Logout</a></li>
+        
                 {{--
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -76,6 +77,7 @@
                 </li>
                 --}}
                 @endif
+                <li><a href="{{ URL::route('contact_index') }}" title="contact">Contact</a></li>
             </ul>
 
             @if (isset(Auth::user()->avatar))

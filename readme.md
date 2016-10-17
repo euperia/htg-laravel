@@ -29,7 +29,81 @@ This project has:
 8. Start the web server `php artisan serve` should be enough to get you up and running.
 9. Finally, browse to http://localhost:8000, and go make something awesome.
 
+---
+# Module Structure
+
+This application consists of a modular strucure. For example, if you wanted to implement a contact us form on your website you would add this to a separate module.
+
+Create a new directory inside the `modules` directory, and create new directories inside that for `Controllers`, `Models`, and `Views`.  Your directory structure should look like this:
+
+    app/
+        ...
+        Modules/
+            Contact/
+                Controllers/
+                Models/
+                Views/
+
+Edit the `config/module.php` file and add the directory name of your module to the array:
+
+    <?php
+    
+    return [
+        'modules' => [
+            'User',
+            'Contact'
+        ]
+    ];
+
+Great, your module is good to go.
+
+## Using Modules
+You would use your modules as you would any other part of Laravel. Your module's Controller classes go in your module's `Controller` directory, models in the `Models` directory, and the views in the `Views` directory.
+
+### Module routing
+Routes for your modules are added to a `routes.php` file in the root of your module's directory. A prefix and namespace are added to the Route::group() method allowing your routes to be separated away.
+For example, a route for the Contact module looks like this:
+
+    <?php
+    // app/Modules/Contact/routes.php
+    
+    Route::group([
+            'prefix' => 'contact',
+            'namespace' => 'App\Modules\Contact\Controllers'
+        ],
+        function () {
+            Route::get('/', ['as' => 'contact_index', 'uses' => 'IndexController@index']);
+            Route::post('/', ['as' => 'contact_submit', 'uses' => 'IndexController@submit']);
+    });
+
+You would use the route in your template as:
+
+    <a href="{{ URL::route('contact_index') }}" title="contact">Contact</a>
+
+### Module Views
+To use your module's views from your controller classes you should reference them using the namespace you set up in the routes file:
+
+    <?php
+    namespace App\Modules\Contact\Controllers;
+
+    use App\Http\Controllers\Controller;
+
+    class IndexController extends Controller {
+
+        public function index()
+        {
+            return View('contact::index');
+        }
+
+     }
+
+### Module modules
+TBC
 
 
+
+## References
+
+Module structure based on Kamran Ahmed's blog post at http://kamranahmed.info/blog/2015/12/03/creating-a-modular-application-in-laravel/
 
 

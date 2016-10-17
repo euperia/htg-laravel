@@ -153,7 +153,9 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
 
-        Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class
+        Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
+
+        App\Modules\ModulesServiceProvider::class
 
     ],
 
